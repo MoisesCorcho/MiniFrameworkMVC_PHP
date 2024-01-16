@@ -40,3 +40,48 @@ http://tusitio.com/public/algo
 Esto redirige la solicitud a la carpeta "public" de tu proyecto, donde generalmente se encuentra el punto de entrada 
 de tu aplicación web. Esta estructura es común en muchos marcos de trabajo PHP y es útil para mantener 
 el código del sitio web fuera de la raíz pública para mejorar la seguridad y la organización.
+
+/** EXPLICACION ADICIONAL **/
+
+Los dos conjuntos de reglas Rewrite que proporcionaste en tus mensajes anteriormente se utilizan comúnmente 
+en proyectos PHP para configurar la redirección de URL y las rutas de los archivos en un servidor web. 
+Ambos conjuntos de reglas están destinados a trabajar en conjunto para enrutar las solicitudes web en un proyecto.
+
+El primer conjunto de reglas:
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteRule ^$ public/ [L]
+  RewriteRule (.*) public/$1 [L]
+</IfModule>
+
+Este conjunto de reglas se utiliza para redirigir las solicitudes web al directorio "public". 
+Básicamente, lo que hace es que si la solicitud web no tiene una ruta específica (es decir, la URL base), redirige 
+la solicitud al directorio "public", lo que significa que todas las solicitudes se manejarán a partir de ahí. 
+Esto se hace para mejorar la seguridad y ocultar ciertos archivos y carpetas del público en general.
+
+Por ejemplo, si tienes la URL "http://localhost/tuproyecto", las reglas Rewrite redirigirán automáticamente 
+a "http://localhost/tuproyecto/public". Entonces, cualquier solicitud que vaya a "http://localhost/tuproyecto" será 
+manejada desde el directorio "public" de tu proyecto.
+
+El segundo conjunto de reglas:
+
+<IfModule mod_rewrite.c>
+  Options -Multiviews
+  RewriteEngine On
+  RewriteBase /proyectos/Moises/Php/shareposts/public
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule  ^(.+)$ index.php?url=$1 [QSA,L]
+</IfModule>
+
+Este conjunto de reglas se utiliza para manejar las rutas de URL dentro del directorio "public". 
+Básicamente, toma las solicitudes entrantes, verifica si corresponden a un archivo o directorio real 
+("RewriteCond %{REQUEST_FILENAME} !-d" y "RewriteCond %{REQUEST_FILENAME} !-f") y, si no lo hacen, las 
+redirige a "index.php?url=...", donde "..." representa la parte de la URL que sigue a "public/". 
+Esto es común en enrutadores web en proyectos PHP donde la URL se utiliza para determinar qué 
+controlador y acción ejecutar en la aplicación.
+
+En conclusion, después de aplicar estos conjuntos de reglas en un proyecto de XAMPP, las solicitudes 
+de tu dominio se manejarán a través del directorio "public". Por ejemplo, si tu dominio 
+es "http://localhost/tuproyecto", todas las solicitudes se manejarán desde "http://localhost/tuproyecto/public". 
+Las reglas Rewrite aseguran que las solicitudes se enrutaron adecuadamente dentro de tu proyecto.
